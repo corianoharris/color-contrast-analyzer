@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Color Contrast Analyzer
 
-## Getting Started
+A Next.js application that analyzes image colors and provides WCAG accessibility compliance information using Sharp, Color library, and Hugging Face's ResNet-50 model.
 
-First, run the development server:
+## Features
 
+- Image upload and analysis
+- SVG rasterization support
+- Color contrast ratio calculation
+- WCAG 2.1 compliance checking (AA and AAA levels)
+- Image classification using Hugging Face's ResNet-50 model
+- Responsive design with Next.js and Tailwind CSS
+
+## Tech Stack
+
+- **Frontend Framework**: Next.js 14
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Image Processing**: Sharp
+- **Color Analysis**: Color.js
+- **AI Model**: Hugging Face ResNet-50
+- **Language**: TypeScript
+
+## Prerequisites
+
+Before you begin, ensure you have installed:
+- Node.js 18.17 or later
+- npm or yarn
+
+## Usage
+
+1. Start the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Upload an image (supported formats: PNG, JPG, GIF, SVG)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. View the analysis results:
+   - Color contrast ratios
+   - WCAG compliance status
+   - Color pairs analysis
+   - Image classifications
 
-## Learn More
+## API Endpoints
 
-To learn more about Next.js, take a look at the following resources:
+### POST /api/analyze
+Analyzes an uploaded image for color contrast and classifications.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Request Body:**
+- `file`: Image file (PNG, JPG, GIF)
+- `svgBase64`: Base64 encoded SVG data (for SVG uploads)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Response:**
+```json
+{
+  "contrast_ratio": number,
+  "passes_wcag_aa": boolean,
+  "passes_wcag_aaa": boolean,
+  "color_pairs": [
+    {
+      "foreground": string,
+      "background": string,
+      "ratio": number
+    }
+  ],
+  "classifications": [
+    {
+      "label": string,
+      "confidence": string
+    }
+  ]
+}
+```
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Acknowledgments
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Hugging Face](https://huggingface.co/)
+- [Sharp](https://sharp.pixelplumbing.com/)
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact [your contact information].
