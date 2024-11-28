@@ -85,7 +85,8 @@ export default function ColorContrastAnalyzer()
         throw new Error('File size must be less than 4MB');
       }
 
-      if (uploadedFile.type === 'image/svg+xml') {
+      if (uploadedFile.type === 'image/svg+xml')
+      {
         // Handle SVG
         const svgText = await uploadedFile.text();
         const rasterizedSVG = await rasterizeSVG(svgText, {
@@ -94,7 +95,8 @@ export default function ColorContrastAnalyzer()
           scale: 2
         });
         formData.append('svgBase64', rasterizedSVG);
-      } else {
+      } else
+      {
         // Handle regular images
         formData.append('file', uploadedFile);
       }
@@ -115,7 +117,7 @@ export default function ColorContrastAnalyzer()
       };
       img.src = previewUrl;
 
-      
+
 
       // Call our API endpoint
       const response = await fetch('/api/analyze', {
@@ -163,6 +165,13 @@ export default function ColorContrastAnalyzer()
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
+      <Button
+        onClick={resetAnalyzer}
+        className="absolute top-4 right-4 bg-white/90 text-black hover:bg-black/100 hover:text-white"
+      >
+        <RotateCcw className="w-4 h-4 mr-2" />
+        Upload New File
+      </Button>
       <Card className="bg-white rounded-lg shadow-lg p-6">
         <div className="space-y-6">
           {/* Upload Section */}
@@ -205,13 +214,6 @@ export default function ColorContrastAnalyzer()
                 <div className="absolute top-4 left-4 bg-black/50 text-white px-2 py-1 rounded text-sm">
                   {imageDimensions.width} × {imageDimensions.height}px
                 </div>
-                <Button
-                  onClick={resetAnalyzer}
-                  className="absolute top-4 right-4 bg-white/90 hover:bg-white/100"
-                >
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Upload New File
-                </Button>
               </div>
             </div>
           )}
