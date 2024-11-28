@@ -8,6 +8,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
+import { useRasterizeSVG } from '@/hooks/useRasterizeSVG';
+
 interface ColorPair
 {
   foreground: string;
@@ -40,6 +42,8 @@ export default function ColorContrastAnalyzer()
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
+  const rasterizeSVG = useRasterizeSVG();
+
   const resetAnalyzer = () =>
   {
     setFile(null);
@@ -59,6 +63,10 @@ export default function ColorContrastAnalyzer()
     const uploadedFile = event.target.files?.[0];
     if (!uploadedFile) return;
 
+    // Prepare form data
+    const formData = new FormData();
+    formData.append('file', uploadedFile);
+
     try
     {
       setAnalyzing(true);
@@ -77,6 +85,20 @@ export default function ColorContrastAnalyzer()
         throw new Error('File size must be less than 4MB');
       }
 
+      if (uploadedFile.type === 'image/svg+xml') {
+        // Handle SVG
+        const svgText = await uploadedFile.text();
+        const rasterizedSVG = await rasterizeSVG(svgText, {
+          width: 800,
+          height: 600,
+          scale: 2
+        });
+        formData.append('svgBase64', rasterizedSVG);
+      } else {
+        // Handle regular images
+        formData.append('file', uploadedFile);
+      }
+
       // Create preview and get image dimensions
       const previewUrl = URL.createObjectURL(uploadedFile);
       setPreview(previewUrl);
@@ -93,9 +115,7 @@ export default function ColorContrastAnalyzer()
       };
       img.src = previewUrl;
 
-      // Prepare form data
-      const formData = new FormData();
-      formData.append('file', uploadedFile);
+      
 
       // Call our API endpoint
       const response = await fetch('/api/analyze', {
