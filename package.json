@@ -2,12 +2,16 @@
   "name": "color-contrast-analyzer",
   "version": "0.1.0",
   "private": true,
-  "author": { "name": "Coriano Harris", "email": "corianoharrispro@gmail.com"}, 
+  "author": {
+    "name": "Coriano Harris",
+    "email": "corianoharrispro@gmail.com"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.2",
@@ -28,6 +32,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.8.1",
     "@types/color": "^4.2.0",
     "@types/node": "^22.10.0",
     "@types/react": "^18",
